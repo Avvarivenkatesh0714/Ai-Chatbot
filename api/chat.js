@@ -1,17 +1,25 @@
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 export default async function handler(req, res) {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: "openai/gpt-4o-mini",
-      messages: [{ role: "user", content: req.body.message }],
-      max_tokens: 120
-    })
+  const { message } = req.body;
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    max_tokens: 120,
+    temperature: 0.4,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a website assistant. Answer only questions related to this website."
+      },
+      { role: "user", content: message }
+    ]
   });
-  const data = await response.json();
-  res.json({ reply: data.choices[0].message.content });
+
+  res.json({ reply: completion.choices[0].message.content });
 }

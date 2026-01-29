@@ -3,13 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "vite": "^7.3.1"
   }
 }
